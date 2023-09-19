@@ -137,7 +137,7 @@ export function updateSectorsWeights(route, sectors){
     for(let i = 0; i < route.length - 1; i++){
         for(let s in sectors){
             if((sectors[s].start.x == route[i].x && sectors[s].start.y == route[i].y && sectors[s].end.x == route[i+1].x && sectors[s].end.y == route[i+1].y) || (sectors[s].end.x == route[i].x && sectors[s].end.y == route[i].y && sectors[s].start.x == route[i+1].x && sectors[s].start.y == route[i+1].y)){
-                sectors[s].increaseWeigth(1)
+                sectors[s].increaseWeigth(2)
             }
         }
     }
@@ -173,6 +173,30 @@ function buildRoute(sectors, map){
                 continue
             }
             console.log(findNearestPoints(sectors[i], sectors[j]))
+        }
+    }
+}
+
+export function getCarRouteByUserRoute(userRoute, carRoutes){
+    let included = false
+    let userRouteIndex = 0
+    for(let i in carRoutes){
+        for(let j in carRoutes[i].route){
+            if(!included && carRoutes[i].route[j].x == userRoute[0].x && carRoutes[i].route[j].y == userRoute[0].y){
+                included = true
+                userRouteIndex = 1
+            }else if(included){
+                if(!(carRoutes[i].route[j].x == userRoute[userRouteIndex].x && carRoutes[i].route[j].y == userRoute[userRouteIndex].y)){
+                    included = false
+                    userRouteIndex = 0
+                    break
+                }else{
+                    userRouteIndex += 1
+                    if(userRouteIndex == userRoute.length){
+                        return carRoutes[i]
+                    }
+                }
+            }
         }
     }
 }

@@ -1,0 +1,9 @@
+.map-container {
+    width: 100%;
+    position: relative;
+}
+
+.map {
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+}

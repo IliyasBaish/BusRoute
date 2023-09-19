@@ -21,6 +21,5 @@ export function getRoute(pointA, pointB, sectors){
         assesedPoints.push(destination)
         route.push(destination)
     }
-
     return route
 }
