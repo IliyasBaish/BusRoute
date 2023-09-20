@@ -1,5 +1,5 @@
-# BusRoute
-project for Uber Hackathon 2023
+# Responsible Routes
+Project for Uber Hackathon 2023
 
 “Responsible Routes” is an application designed to reduce traffic jams by building the most efficient routes; preserve the environment by reducing exhaust emissions; organize flexible and convenient bus routes; and increase the amount of affordable transport for people with low incomes.
 
@@ -16,4 +16,4 @@ let roads = [
 
 Baishev Iliyas: [iliyasbaish@gmail.com](iliyasbaish@gmail.com)
 
-Sembayez Yerbolat: [sembayevyerbolat@gmail.com](sembayevyerbolat@gmail.com)
+Sembayev Yerbolat: [sembayevyerbolat@gmail.com](sembayevyerbolat@gmail.com)
