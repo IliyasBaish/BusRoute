@@ -14,6 +14,7 @@ let roads = [
 
 UserManual.docx - instructions for users on using the application and solving common issues
 
+Link to website - [iliyasbaish.github.io](iliyasbaish.github.io)
 ## Contacts:
 
 Baishev Iliyas: [iliyasbaish@gmail.com](iliyasbaish@gmail.com)
