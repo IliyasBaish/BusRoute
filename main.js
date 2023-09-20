@@ -64,7 +64,7 @@ function drawMap(context, sectors){
 //function that returns map in inital state - without routes and selected points
 function refreshMap(btn_group, sectors, context){
     let elements = document.getElementsByClassName(btn_group)
-    for(let i = 0; i < elements.length-1; i++){
+    for(let i = 0; i < elements.length; i++){
         elements[i].style.backgroundColor = "white"
         elements[i].style.borderColor = "black"
     }
@@ -133,7 +133,6 @@ document.getElementById("busButton").onclick = refreshbus
 function addPoints(){
     let btn_container = document.getElementById("map-buttons-1")
     let points = takeSectorsPoints(car_sectors)
-    console.log(points)
     for(let i in points){
         let button = document.createElement("button")
         button.classList.add("map-button")
@@ -199,7 +198,6 @@ function enableButtons(){
 function addBusButtons(){
     let btn_container = document.getElementById("map-buttons-2")
     let points = takeSectorsPoints(car_sectors)
-    console.log(points)
     for(let i in points){
         let button = document.createElement("button")
         button.classList.add("map-button-bus")

@@ -12,6 +12,8 @@ let roads = [
 ]
 ```
 
+UserManual.docx - instructions for users
+
 ## Contacts:
 
 Baishev Iliyas: [iliyasbaish@gmail.com](iliyasbaish@gmail.com)
