@@ -10,7 +10,7 @@
 <body>
     <div class="p-5 bg-primary text-white text-center">
         <h1>Responsive Routes</h1>
-        <p>The best way to optimize trnsportation</p> 
+        <p>The best way to optimize transportation</p> 
     </div>
     <div class="container mt-5">
         <div class="row">
@@ -20,58 +20,14 @@
             <div class="map-continer">
                 <canvas class="map" id="canvas" height="400" width="700">
                 </canvas>
+                <div class="map-buttons" id="map-buttons-1">
+                </div>
+                <canvas height="400" width="700"></canvas>
             </div>
           </div>
         </div>
         <div class="row mb-1 mt-2">
-            <div class="col-12 text-center"><p class="fs-3" id="car-results">Let's find whether a car can give you a lift</p></div>
-        </div>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-4">
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">Car start point</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-bg-danger">x</span>
-                        <input id="car-start-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text text-bg-danger">y</span>
-                        <input id="car-start-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">Car end point</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-bg-danger">x</span>
-                        <input id="car-end-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text text-bg-danger">y</span>
-                        <input id="car-end-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">User start point</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-bg-success">x</span>
-                        <input id="user-start-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text text-bg-success">y</span>
-                        <input id="user-start-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">User end point</label>
-                    <div class="input-group">
-                        <span class="input-group-text text-bg-success">x</span>
-                        <input id="user-end-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text text-bg-success">y</span>
-                        <input id="user-end-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-            </div>
-            <div class="col-2"></div>
-        </div>
-        <div class="row mb-5 mt-2">
-            <div class="col-12 text-center"><button id="carButton" type="button" class="btn btn-primary">Can the car get the user?</button></div>
+            <div class="col-12 text-center"><p class="fs-3" id="car-results">Chose Point from which car start the trip</p></div>
         </div>
         <div class="row mt-4">
             <div class="col-lg-12">
@@ -80,38 +36,18 @@
                 <div class="map-continer">
                     <canvas class="map" id="canvas2" height="400" width="700">
                     </canvas>
+                    <div class="map-buttons" id="map-buttons-2">
+                    </div>
+                    <canvas height="400" width="700"></canvas>
                 </div>
+                
               </div>
         </div>
         <div class="row mb-1 mt-2">
             <div class="col-12 text-center"><p class="fs-3" id="bas-results">A map that shows where routes need to be taken</p></div>
         </div>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-8">
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">Start point</label>
-                    <div class="input-group">
-                        <span class="input-group-text">x</span>
-                        <input id="point-start-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text">y</span>
-                        <input id="point-start-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <label for="basic-url" class="form-label">End point</label>
-                    <div class="input-group">
-                        <span class="input-group-text">x</span>
-                        <input id="point-end-x" type="number" class="form-control" aria-label="Username">
-                        <span class="input-group-text">y</span>
-                        <input id="point-end-y" type="number" class="form-control" aria-label="Server">
-                    </div>
-                </div>
-            </div>
-            <div class="col-2"></div>
-        </div>
         <div class="row mb-5 mt-2">
-            <div class="col-12 text-center"><button id="busButton" type="button" class="btn btn-primary">Add Route</button></div>
+            <div class="col-12 text-center"><button id="busButton" type="button" class="btn btn-primary">Refresh</button></div>
         </div>
     </div>
 

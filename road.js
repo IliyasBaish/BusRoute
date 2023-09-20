@@ -201,3 +201,24 @@ export function getCarRouteByUserRoute(userRoute, carRoutes){
         }
     }
 }
+
+export function takeSectorsPoints(sectors){
+    let points = []
+    for(let i in sectors){
+        let included = [sectors[i].end, sectors[i].start]
+        for(let j in points){
+            if(points[j].x == sectors[i].start.x && points[j].y == sectors[i].start.y){
+                included[1] = null
+            }else if(points[j].x == sectors[i].end.x && points[j].y == sectors[i].end.y){
+                included[0] = null
+            }
+        } 
+        if(included[0]){
+            points.push(included[0])
+        }
+        if(included[1]){
+            points.push(included[1])
+        }     
+    }
+    return points
+}

@@ -1,9 +1,37 @@
 .map-container {
+    height: 400px;
     width: 100%;
-    position: relative;
+    height: 400px;
 }
 
 .map {
-    margin-left: 50%;
+    left: 50%;
     transform: translate(-50%, 0);
+    position: absolute;
+}
+
+.map-buttons{
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 700px;
+    height: 400px;
+    position: absolute;
+}
+
+.map-button{
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    border-radius: 10px;
+}
+
+.map-button-bus{
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    border-radius: 10px;
+}
+
+.btn-point {
+    width: 100%;
 }
