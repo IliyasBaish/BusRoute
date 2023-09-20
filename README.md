@@ -1,10 +1,10 @@
 # Responsible Routes
-Project for Uber Hackathon 2023
+Project for Virtual Global Hackathon 2023
 
 “Responsible Routes” is an application designed to reduce traffic jams by building the most efficient routes; preserve the environment by reducing exhaust emissions; organize flexible and convenient bus routes; and increase the amount of affordable transport for people with low incomes.
 
 ## Usage
-Custom routes can be add by pushing road object to roads variable
+Custom routes can be added by pushing road object to 'roads' variable
 ```javascript
 let roads = [
     {start: {x: startPointX, y: startPointy}, end: {x: endPointX, y: endPointY}},
