@@ -193,6 +193,7 @@ export function getCarRouteByUserRoute(userRoute, carRoutes){
                 }else{
                     userRouteIndex += 1
                     if(userRouteIndex == userRoute.length){
+                        console.log(carRoutes[i])
                         return carRoutes[i]
                     }
                 }

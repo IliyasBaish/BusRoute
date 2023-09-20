@@ -31,7 +31,7 @@ let carRoutes = [
     {start: {x: 1, y: 1}, end: {x: 4, y: 4}, route: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 4}]}
 ]
 
-let a = getCarRouteByUserRoute([{x: 2, y: 2}, {x: 3, y: 3}], carRoutes)
+//let a = getCarRouteByUserRoute([{x: 2, y: 2}, {x: 3, y: 3}], carRoutes)
 
 let car_sectors = getRoadsSectors(roads3)
 let bus_sectors = car_sectors
@@ -41,8 +41,6 @@ for(let i in userRoutes){
     updateSectorsWeights(route, sectors)
 }
 
-//let busRoute = buildRouteBySectors(sectors, userRoutes)
-
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 
@@ -51,10 +49,6 @@ const ctx2 = canvas2.getContext('2d');
 
 drawMap(ctx, car_sectors)
 drawMap(ctx2, car_sectors)
-/*
-for(let i in busRoute){
-    drawLine(ctx, [busRoute[i].start.x*50, 500-busRoute[i].start.y*50], [busRoute[i].end.x*50, 500-busRoute[i].end.y*50], 'red', (busRoute[i].weigth+1)*5)
-}*/
 
 function drawLine(ctx, begin, end, stroke = 'black', width = 1) {
     if (stroke) {
@@ -71,19 +65,8 @@ function drawLine(ctx, begin, end, stroke = 'black', width = 1) {
     ctx.stroke();
 }
 
-function animateLine(ctx, begin, end, color, width, speed){
-    let currentEnd = 0
-    let x
-    x = setInterval(function() {
-        currentEnd += 0.1
-        if(currentEnd == 1){
-            clearInterval(x)
-        }
-        drawLine(ctx, [begin[0], 400-begin[1]], [begin[0]+((end[0]-begin[0])*currentEnd), 400-begin[1]+((end[1]-begin[1])*currentEnd)], color, width )
-    }, speed)
-}
-
 function carToUser(){
+    console.log("test")
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawMap(ctx, car_sectors)
     let car_start = {x: parseInt(document.getElementById("car-start-x").value), y: parseInt(document.getElementById("car-start-y").value)}
@@ -95,12 +78,17 @@ function carToUser(){
     if(getCarRouteByUserRoute(user_route, [{route: car_route}])){
         drawRoute(car_route, "red")
         drawRoute(user_route, "green")
+        document.getElementById("car-results").innerHTML = "Car can get up passenger"
+    }else{
+        drawRoute(car_route, "red")
+        drawRoute(user_route, "green")
+        document.getElementById("car-results").innerHTML = "Sorry, try to find another route or go by bus"
     }
 }
 
 function drawRoute(route, color){
     for(let i = 0; i < route.length - 1; i++){
-        drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 3)
+        drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 5)
     }
 }
 
@@ -109,10 +97,16 @@ function drawMap(ctx, sectors){
         let color
         if(sectors[i].getWeight() == 0){
             color = "black"
+            drawLine(ctx, [sectors[i].start.x*50, 400-sectors[i].start.y*50], [sectors[i].end.x*50, 400-sectors[i].end.y*50], color, 4)
+            drawLine(ctx, [sectors[i].start.x*50, 400-sectors[i].start.y*50], [sectors[i].end.x*50, 400-sectors[i].end.y*50], "white", 3)
+        }else if(sectors[i].getWeight() > 4){
+            color = 'rgb('+(255-(sectors[i].getWeight()-3)*20)+', 0, 0)'
+            drawLine(ctx, [sectors[i].start.x*50, 400-sectors[i].start.y*50], [sectors[i].end.x*50, 400-sectors[i].end.y*50], color, 4)
         }else{
-            color = 'rgb('+((sectors[i].getWeight()+1)*50)+', 0, 0)'
+            color = 'rgb(0, '+(255-(sectors[i].getWeight()+1)*20)+', 0)'
+            drawLine(ctx, [sectors[i].start.x*50, 400-sectors[i].start.y*50], [sectors[i].end.x*50, 400-sectors[i].end.y*50], color, 4)
         }
-        drawLine(ctx, [sectors[i].start.x*50, 400-sectors[i].start.y*50], [sectors[i].end.x*50, 400-sectors[i].end.y*50], color, 3)
+        
     }
     ctx.font = "12px Arial"
     drawLine(ctx, [1*50, 400-0*50], [13*50, 400-0*50], "black", 3)
@@ -135,7 +129,6 @@ function addBusRoute(){
     let point_start = {x: parseInt(document.getElementById("point-start-x").value), y: parseInt(document.getElementById("point-start-y").value)}
     let point_end = {x: parseInt(document.getElementById("point-end-x").value), y: parseInt(document.getElementById("point-end-y").value)}
     let point_route = getRoute(point_start, point_end, bus_sectors)
-    console.log(point_route)
     updateSectorsWeights(point_route, bus_sectors)
     drawMap(ctx2, bus_sectors)
 }
