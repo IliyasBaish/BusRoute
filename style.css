@@ -37,8 +37,8 @@
 }
 
 #gif-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 1000px;
     margin-left: 50%;
     margin-top: 50%;
     transform: translate(-50%, -50%);
@@ -46,7 +46,7 @@
 
 #explore-btn {
     position: absolute;
-    margin-top: 65vh;
+    margin-top: 600px;
     z-index: 100;
 }
 
