@@ -35,3 +35,21 @@
 .btn-point {
     width: 100%;
 }
+
+#gif-container {
+    width: 100vw;
+    height: 100vh;
+    margin-left: 50%;
+    margin-top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#explore-btn {
+    position: absolute;
+    margin-top: 65vh;
+    z-index: 100;
+}
+
+#top-header{
+    padding-top: 30px;
+}

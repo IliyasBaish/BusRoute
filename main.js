@@ -61,11 +61,11 @@ function carToUser(){
     if(getCarRouteByUserRoute(user_route, [{route: car_route}])){
         drawRoute(car_route, "red")
         drawRoute(user_route, "green")
-        document.getElementById("car-results").innerHTML = "Car can get up passenger, you can chose other starting point"
+        document.getElementById("car-results").innerHTML = "The car can give a lift to the passenger, you can choose another starting point"
     }else{
         drawRoute(car_route, "red")
         drawRoute(user_route, "green")
-        document.getElementById("car-results").innerHTML = "Sorry, the car cannot get up passenger, chose other starting point"
+        document.getElementById("car-results").innerHTML = "Sorry, the car cannot give a lift to the passenger, choose another starting point"
     }
 }
 
