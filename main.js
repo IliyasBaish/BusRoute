@@ -1,6 +1,5 @@
-import { getRoadsSectors, getPointRoutes, getRoadSectors, updateSectorsWeights, buildRouteBySectors, getCarRouteByUserRoute, takeSectorsPoints} from "./road.js"
+import { getRoadsSectors, updateSectorsWeights, getCarRouteByUserRoute, takeSectorsPoints} from "./road.js"
 import { getRoute } from "./map.js"
-import { getAngle, getVector, getMinimumAnglePoint, calculateMinimumDistanceToRoute } from "./point.js"
 
 let roads3 = [
     {start: {x: 1, y: 1}, end: {x: 1, y: 5}},
@@ -21,64 +20,28 @@ let roads3 = [
     {start: {x: 10, y: 7}, end: {x: 10, y: 5}},
 ]
 
+//calculate sectors of roads for bus and car maps
+
 let car_sectors = getRoadsSectors(roads3)
 let bus_sectors = getRoadsSectors(roads3)
 
+
+//car map
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext('2d');
 
+//bus map
 const canvas2 = document.getElementById('canvas2');
 const ctx2 = canvas2.getContext('2d');
 
+//drawing maps
 drawMap(ctx, car_sectors)
 drawMap(ctx2, bus_sectors)
 
-function drawLine(ctx, begin, end, stroke = 'black', width = 1) {
-    if (stroke) {
-        ctx.strokeStyle = stroke;
-    }
 
-    if (width) {
-        ctx.lineWidth = width;
-    }
+//DRAWING FUNCTIONS START
 
-    ctx.beginPath();
-    ctx.moveTo(...begin);
-    ctx.lineTo(...end);
-    ctx.stroke();
-}
-
-function carToUser(){
-    console.log("test")
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawMap(ctx, car_sectors)
-    let car_start = carStart
-    let car_end = carEnd
-    let car_route = getRoute(car_start, car_end, car_sectors)
-    let user_start = userStart
-    let user_end = userEnd
-    let user_route = getRoute(user_start, user_end, car_sectors)
-    if(getCarRouteByUserRoute(user_route, [{route: car_route}])){
-        drawRoute(car_route, "red")
-        drawRoute(user_route, "green")
-        document.getElementById("car-results").innerHTML = "The car can give a lift to the passenger, you can choose another starting point"
-    }else{
-        drawRoute(car_route, "red")
-        drawRoute(user_route, "green")
-        document.getElementById("car-results").innerHTML = "Sorry, the car cannot give a lift to the passenger, choose another starting point"
-    }
-}
-
-function drawRoute(route, color){
-    for(let i = 0; i < route.length - 1; i++){
-        if(color == "red"){
-            drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 7)
-        }else if(color == "green"){
-            drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 4)
-        }
-    }
-}
-
+//drawMap function gets map contects and draws sectors of roads on this map
 function drawMap(context, sectors){
     context.clearRect(0, 0, 700, 400)
     for(let i in sectors){
@@ -98,17 +61,75 @@ function drawMap(context, sectors){
     }
 }
 
-function addBusRoute(){
-    ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    let point_start = {x: parseInt(document.getElementById("point-start-x").value), y: parseInt(document.getElementById("point-start-y").value)}
-    let point_end = {x: parseInt(document.getElementById("point-end-x").value), y: parseInt(document.getElementById("point-end-y").value)}
-    let point_route = getRoute(point_start, point_end, bus_sectors)
-    updateSectorsWeights(point_route, bus_sectors)
+//function that returns map in inital state - without routes and selected points
+function refreshMap(btn_group, sectors, context){
+    let elements = document.getElementsByClassName(btn_group)
+    for(let i = 0; i < elements.length-1; i++){
+        elements[i].style.backgroundColor = "white"
+        elements[i].style.borderColor = "black"
+    }
+    drawMap(context, sectors)
+}
+
+//function that returns bus map in inital state
+function refreshbus(){
+    bus_sectors = getRoadsSectors(roads3)
     drawMap(ctx2, bus_sectors)
 }
 
+//function to draw straight line from point A to point B with provided color and width
+function drawLine(ctx, begin, end, stroke = 'black', width = 1) {
+    if (stroke) {
+        ctx.strokeStyle = stroke;
+    }
+
+    if (width) {
+        ctx.lineWidth = width;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(...begin);
+    ctx.lineTo(...end);
+    ctx.stroke();
+}
+
+//function that draws route - array of points on car map
+function drawRoute(route, color){
+    for(let i = 0; i < route.length - 1; i++){
+        if(color == "red"){
+            drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 7)
+        }else if(color == "green"){
+            drawLine(ctx, [route[i].x*50, 400-route[i].y*50], [route[i+1].x*50, 400-route[i+1].y*50], color, 4)
+        }
+    }
+}
+
+//DRAWING FUNCTIONS END
 
 
+//BUTTON FUNCTIONS START
+
+//add points to car map
+addPoints()
+
+//variable that describes what point user shoul choose on car map at this moment
+let findPoint = "carStart"
+
+//points of car and user routes' start and end
+let carStart, carEnd, userStart, userEnd
+
+//add points to bus map
+addBusButtons()
+
+//variable that describes what point user shoul choose on bus map at this moment
+let busPointMode = "start"
+//points bus routes' start and end
+let busPointStart, busPointEnd
+
+//refresh button
+document.getElementById("busButton").onclick = refreshbus
+
+//function that adds points of map intersection on car map
 function addPoints(){
     let btn_container = document.getElementById("map-buttons-1")
     let points = takeSectorsPoints(car_sectors)
@@ -129,17 +150,7 @@ function addPoints(){
     }
 }
 
-addPoints()
-
-
-
-
-
-let findPoint = "carStart"
-
-let carStart, carEnd, userStart, userEnd
-let carStartButton, carEndButton, userStartButton, userEndButton
-
+//function that serves button click of points on car map
 function getButtonPoint(element){
     let data = element.value.split(" ")
     if(findPoint == "carStart"){
@@ -159,48 +170,22 @@ function getButtonPoint(element){
         enableButtons()
         document.getElementById("car-results").innerHTML = "Chose Point from which user start the trip"
     }else if(findPoint == "userStart"){
-        userStartButton = element
         userStart = {x: parseInt(data[0]), y: parseInt(data[1])}
         element.style.backgroundColor = "green"
         element.disabled = "true"
         findPoint = "userEnd"
         document.getElementById("car-results").innerHTML = "Chose Point where user ends the trip"
     }else if(findPoint == "userEnd"){
-        userEndButton = element
         userEnd = {x: parseInt(data[0]), y: parseInt(data[1])}
         element.style.backgroundColor = "green"
         element.disabled = "true"
         findPoint = "carStart"
-        console.log("test2")
         carToUser()
         enableButtons()
     }
 }
 
-function setPointMode(value){
-    findPoint = value
-    if(findPoint == "carStart"){
-        setButtonsColor("red")
-    }else if(findPoint == "carEnd"){
-        setButtonsColor("red")
-        enable = true
-    }else if(findPoint == "userStart"){
-        setButtonsColor("green")
-    }else if(findPoint == "userEnd"){
-        setButtonsColor("green")
-        enable = true
-    }
-}
-
-function setButtonsColor(color){
-    let elements = document.getElementsByClassName("map-button")
-    for(let i in elements){
-        if(elements[i].style && !elements[i].disabled && elements[i] != carStartButton && elements[i] != carEndButton && elements[i] != userStartButton && elements[i] != userEndButton){
-            elements[i].style.backgroundColor = color
-        }
-    }
-}
-
+//function that makes all buttons of car map clickable
 function enableButtons(){
     let elements = document.getElementsByClassName("map-button")
     for(let i in elements){
@@ -210,16 +195,7 @@ function enableButtons(){
     }
 }
 
-function refreshMap(btn_group, sectors, context){
-    let elements = document.getElementsByClassName(btn_group)
-    for(let i = 0; i < elements.length-1; i++){
-        elements[i].style.backgroundColor = "white"
-        elements[i].style.borderColor = "black"
-    }
-    drawMap(context, sectors)
-}
-
-
+//getting and drawing all points on bus map
 function addBusButtons(){
     let btn_container = document.getElementById("map-buttons-2")
     let points = takeSectorsPoints(car_sectors)
@@ -238,11 +214,7 @@ function addBusButtons(){
     }
 }
 
-addBusButtons()
-
-let busPointMode = "start"
-let busPointStart, busPointEnd
-
+//function that serves bus map button clicks
 function choseBusPoints(element){
     let data = element.value.split(" ")
     if(busPointMode == "start"){
@@ -260,9 +232,27 @@ function choseBusPoints(element){
     }
 }
 
-document.getElementById("busButton").onclick = refreshbus
+//BUTTON FUNCTIONS END
 
-function refreshbus(){
-    bus_sectors = getRoadsSectors(roads3)
-    drawMap(ctx2, bus_sectors)
+
+//function that calculates whether there is an intersection of car and user route
+function carToUser(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawMap(ctx, car_sectors)
+    let car_start = carStart
+    let car_end = carEnd
+    let car_route = getRoute(car_start, car_end, car_sectors)
+    let user_start = userStart
+    let user_end = userEnd
+    let user_route = getRoute(user_start, user_end, car_sectors)
+    if(getCarRouteByUserRoute(user_route, [{route: car_route}])){
+        drawRoute(car_route, "red")
+        drawRoute(user_route, "green")
+        document.getElementById("car-results").innerHTML = "The car can give a lift to the passenger, you can choose another starting point"
+    }else{
+        drawRoute(car_route, "red")
+        drawRoute(user_route, "green")
+        document.getElementById("car-results").innerHTML = "Sorry, the car cannot give a lift to the passenger, choose another starting point"
+    }
 }
+

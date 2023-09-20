@@ -1,6 +1,7 @@
 import { getVector, getAngle, getMinimumAnglePoint, contains } from "./point.js"
 import { getPointRoutes } from "./road.js"
 
+//function that calculates route from point A to point B on provided map
 export function getRoute(pointA, pointB, sectors){
     let destination = pointA
     let assesedPoints = []

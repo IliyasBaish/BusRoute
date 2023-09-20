@@ -1,3 +1,6 @@
+//mathemticle functions that helps to find route for destinations point
+
+//get vector of from point1 to point2
 export function getVector(point1, point2){
     const deltaX = point2.x - point1.x;
     const deltaY = point2.y - point1.y;
@@ -7,6 +10,7 @@ export function getVector(point1, point2){
     return vector;
 }
 
+//get angle between 2 vectors
 export function getAngle(vector1, vector2) {
     // Calculate the dot product of the two vectors
     const dotProduct = vector1.x * vector2.x + vector1.y * vector2.y;
@@ -27,6 +31,7 @@ export function getAngle(vector1, vector2) {
     return degrees;
 }
 
+//get minimum angle between all possible ways of curent point
 export function getMinimumAnglePoint(pointA, pointB, possiblePoints){
     let destinationVector = getVector(pointA, pointB)
     let min = {point: null, angle: 360}
@@ -42,6 +47,7 @@ export function getMinimumAnglePoint(pointA, pointB, possiblePoints){
     return min
 }
 
+//check if pointlist includes point
 export function contains(point, pointlist){
     for(let i in pointlist){
         if((pointlist[i].x == point.x) && (pointlist[i].y == point.y)){
@@ -98,6 +104,7 @@ function pointToLineSegmentDistance(point, segmentStart, segmentEnd) {
     return distance;
 }
 
+//find nearest points of 2 line segments
 export function findNearestPoints(segment1Start, segment1End, segment2Start, segment2End) {
     // Calculate the distances from segment1's start and end points to segment2's start and end points
     const distances = [
@@ -113,7 +120,7 @@ export function findNearestPoints(segment1Start, segment1End, segment2Start, seg
     return distances[0]
   }
   
-  // Calculate the Euclidean distance between two points
+// Calculate the Euclidean distance between two points
 function distance(point1, point2) {
     const dx = point1.x - point2.x;
     const dy = point1.y - point2.y;

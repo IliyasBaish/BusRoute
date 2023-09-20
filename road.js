@@ -1,5 +1,21 @@
 import { contains, calculateMinimumDistanceToRoute, findNearestPoints } from "./point.js";
 
+class RoadSector {
+    constructor(start, end){
+        this.start = start
+        this.end = end
+        this.weigth = 0
+    }
+
+    increaseWeigth(weigth) {
+        this.weigth += weigth
+    }
+
+    getWeight(){
+        return this.weigth
+    }
+}
+
 function calculateLineSegmentIntersection(road1, road2) {
     const { x: x1, y: y1 } = road1.start;
     const { x: x2, y: y2 } = road1.end;
@@ -27,6 +43,7 @@ function calculateLineSegmentIntersection(road1, road2) {
     return null;
 }
 
+//get sectors of all roads - creating map
 export function getRoadsSectors(roads){
     let sectors = []
     for(let i = 0; i < roads.length; i++){
@@ -38,33 +55,7 @@ export function getRoadsSectors(roads){
     return sectors
 }
 
-export function getPointRoutes(point, roads, exeptions = null){
-    let routes = []
-    for(let i in roads){
-        let outPoint
-        if(roads[i].start.x == point.x && roads[i].start.y == point.y){
-            outPoint = roads[i].end
-        }else if(roads[i].end.x == point.x && roads[i].end.y == point.y){
-            outPoint = roads[i].start
-        }
-        if(outPoint != undefined){
-            if(exeptions == null){
-                routes.push(outPoint)
-            }else{
-                if(exeptions.length == 0){
-    
-                    routes.push(outPoint)
-                }else{
-                    if(!contains(outPoint, exeptions)){
-                        routes.push(outPoint)
-                    }
-                }
-            }
-        }
-    }
-    return routes
-}
-
+//get sectors of one road
 export function getRoadSectors(road, roads){
     let sectors = []
     let points = [road.start, road.end]
@@ -94,45 +85,35 @@ export function getRoadSectors(road, roads){
     return sectors
 }
 
-class RoadSector {
-    constructor(start, end){
-        this.start = start
-        this.end = end
-        this.weigth = 0
+//get all possible routes from provided point, exeptions - points that are already visited
+export function getPointRoutes(point, roads, exeptions = null){
+    let routes = []
+    for(let i in roads){
+        let outPoint
+        if(roads[i].start.x == point.x && roads[i].start.y == point.y){
+            outPoint = roads[i].end
+        }else if(roads[i].end.x == point.x && roads[i].end.y == point.y){
+            outPoint = roads[i].start
+        }
+        if(outPoint != undefined){
+            if(exeptions == null){
+                routes.push(outPoint)
+            }else{
+                if(exeptions.length == 0){
+    
+                    routes.push(outPoint)
+                }else{
+                    if(!contains(outPoint, exeptions)){
+                        routes.push(outPoint)
+                    }
+                }
+            }
+        }
     }
-
-    increaseWeigth(weigth) {
-        this.weigth += weigth
-    }
-
-    getWeight(){
-        return this.weigth
-    }
+    return routes
 }
 
-function getPointSector(point, segmentStart, segmentEnd) {
-    const { x: px, y: py } = point;
-    const { x: x1, y: y1 } = segmentStart;
-    const { x: x2, y: y2 } = segmentEnd;
-  
-    // Check if the point is collinear with the line segment.
-    const crossProduct = (py - y1) * (x2 - x1) - (px - x1) * (y2 - y1);
-  
-    if (Math.abs(crossProduct) > Number.EPSILON) {
-      return false; // The point is not collinear with the line segment.
-    }
-  
-    // Check if the point is within the bounds of the line segment.
-    const dotProduct = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
-    const segmentLengthSquared = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
-  
-    if (dotProduct < 0 || dotProduct > segmentLengthSquared) {
-      return false; // The point is not within the bounds of the line segment.
-    }
-  
-    return true; // The point lies on the line segment.
-}
-
+//updating weight - adding weight to all sectors where the route goes
 export function updateSectorsWeights(route, sectors){
     for(let i = 0; i < route.length - 1; i++){
         for(let s in sectors){
@@ -143,40 +124,7 @@ export function updateSectorsWeights(route, sectors){
     }
 }
 
-export function buildRouteBySectors(sectors, startingPoints, maxDist){
-    let route =[]
-    let sorted = sectors.sort((el1, el2) => (el1.getWeight() > el2.getWeight()) ? 1 : (el1.getWeight() < el2.getWeight()) ? -1 : 0)
-
-    let max = sorted.pop()
-
-    for(let i in sorted){
-        if(sorted[i].getWeight() < max){
-            break
-        }else{
-            route.push(sorted[i])
-        }
-    }
-
-    for(let i in startingPoints){
-        let dist = calculateMinimumDistanceToRoute(startingPoints[i].start, route)
-        if(dist > maxDist){
-
-        }
-    }
-    return route
-}
-
-function buildRoute(sectors, map){
-    for(let i = 0; i < sectors.length; i++){
-        for(let j = 0; j < sectors.length; j++){
-            if(j == i){
-                continue
-            }
-            console.log(findNearestPoints(sectors[i], sectors[j]))
-        }
-    }
-}
-
+//find if car route and user route intesects
 export function getCarRouteByUserRoute(userRoute, carRoutes){
     let included = false
     let userRouteIndex = 0
@@ -202,6 +150,7 @@ export function getCarRouteByUserRoute(userRoute, carRoutes){
     }
 }
 
+//take all points of roads intersection
 export function takeSectorsPoints(sectors){
     let points = []
     for(let i in sectors){
